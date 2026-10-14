@@ -1,0 +1,1 @@
+- [VidyaSetu product and access model](vidyasetu-product-access.md) — preserve the rural-school learner focus, Hindi/Telugu readiness, and admin-only role assignment.

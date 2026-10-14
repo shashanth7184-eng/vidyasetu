@@ -1,0 +1,81 @@
+Build a complete full-stack web app called "VidyaSetu" (Learning Bridge) that
+improves foundational learning (reading, writing, basic math) for students in
+under-resourced rural and semi-urban government schools.
+
+TECH STACK
+- Frontend: React + Vite + TypeScript + Tailwind CSS + React Router
+- Backend and database: Supabase only (Postgres, Auth, Row Level Security,
+  Storage, Edge Functions). Do NOT create a separate Node/Express server.
+- Use @supabase/supabase-js. Read VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+  from environment variables / Replit Secrets. Never hardcode keys.
+- Mobile-first, low-bandwidth friendly, PWA with offline caching of lessons.
+- Simple English UI with an i18n structure ready for Hindi and Telugu.
+
+USER ROLES (Supabase Auth + a `profiles` table with a `role` column)
+1. admin: manages schools, users, and sees all analytics
+2. teacher: manages own school's classes, students, assessments, attendance
+3. volunteer: local youth or older students who tutor and run evening centers
+4. parent: read-only view of their own child's progress
+
+DATABASE (generate a supabase/schema.sql file with tables, foreign keys,
+indexes, and RLS policies for every table)
+- profiles(id, full_name, role, phone, school_id, village, created_at)
+- schools(id, name, village, district, state)
+- classes(id, school_id, grade, section, teacher_id)
+- students(id, full_name, gender, dob, class_id, parent_id, guardian_phone,
+  village, enrolled_on, active)
+- assessments(id, student_id, assessed_by, date, reading_level
+  [beginner/letter/word/paragraph/story], math_level
+  [beginner/number_recognition/addition/subtraction/division], notes)
+- attendance(id, student_id, date, status [present/absent], reason)
+- tutoring_sessions(id, volunteer_id, student_id, subject, date, duration_min,
+  topic, outcome_notes)
+- learning_centers(id, name, village, schedule, volunteer_lead_id, capacity)
+- center_enrollments(center_id, student_id)
+- resources(id, title, subject, grade, type [pdf/audio/video/worksheet],
+  file_url, language, offline_available)
+- dropout_flags(id, student_id, risk_score, reasons, flagged_on, status
+  [open/in_progress/resolved], action_taken)
+RLS rules: teachers see only their school's data; parents see only their own
+child; volunteers see only students assigned to them; admins see everything.
+
+FEATURES
+1. Auth: email/phone login, role-based redirects, protected routes.
+2. Student management: add/edit/search/filter students, bulk CSV import.
+3. Baseline and periodic assessment: quick form to record reading and math
+   level; show progress timeline per student as a chart.
+4. Attendance: one-tap daily class attendance, absence streak highlighting.
+5. Peer tutoring ("Each One Teach One"): auto-suggest matching volunteers to
+   students by subject need and village; log sessions.
+6. Community learning centers: create centers, schedule evening sessions,
+   enroll students, track attendance.
+7. Resource library: upload/download lessons to Supabase Storage, filter by
+   grade/subject/language, mark items for offline use.
+8. Dropout early-warning: a Supabase Edge Function computes risk_score from
+   absence streaks, stagnant assessments, and age/gender factors, and writes
+   to dropout_flags. Show a prioritized "At-risk students" list to teachers.
+9. Parent portal: simple, large-text view of child's level, attendance, and
+   next steps, in the local language.
+10. Admin dashboard: charts for learning-level distribution, attendance
+    trends, dropout flags, and volunteer hours, by school and district.
+
+PAGES
+Login, Role Dashboard, Students, Student Detail, Assessments, Attendance,
+Tutoring, Learning Centers, Resources, At-Risk List, Parent View, Admin
+Analytics, Settings.
+
+DELIVERABLES
+- Clean folder structure (src/components, pages, hooks, lib, types).
+- supabase/schema.sql and supabase/seed.sql with realistic sample data.
+- Supabase Edge Function in supabase/functions/calculate-risk/.
+- A README.md covering setup, env variables, Supabase setup steps, and how
+  to run locally.
+- A .env.example file and a .gitignore that excludes .env.
+
+BUILD IN PHASES AND STOP AFTER EACH ONE for my confirmation (to save credits):
+Phase 1: project setup, Supabase client, auth, roles, schema.sql
+Phase 2: students, attendance, assessments
+Phase 3: tutoring, learning centers, resource library
+Phase 4: dropout risk function, dashboards, parent portal
+Phase 5: PWA/offline, polish, README
+Start with Phase 1 only.

@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "VidyaSetu"
+description = "A learning support platform for government-school communities, connecting teachers, families, volunteers, and students around foundational reading, writing, and math."
+version = "1.0.0"
+id = "artifacts/vidya-setu"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25541
+
+[services.development]
+run = "pnpm --filter @workspace/vidya-setu run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/vidya-setu", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/vidya-setu/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25541"
+BASE_PATH = "/"
